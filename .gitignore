@@ -3,3 +3,4 @@ Extracted/*
 package-lock.json
 .vscode/
 .egstore/
+config.json
