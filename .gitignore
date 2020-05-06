@@ -1,3 +1,5 @@
 node_modules/
 Extracted/*
 package-lock.json
+.vscode/
+.egstore/
