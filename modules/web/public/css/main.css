@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css?family=Blinker|Open+Sans|Roboto|Roboto+Mono|Saira+Stencil+One&display=swap');
+
+body {
+    margin: 0;
+    background-color: #2e2e2e;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0);
+}
+
+*::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+#header {
+    z-index: 500;
+    margin: 0; 
+    width: 100%;
+    font-family: 'Saira Stencil One', cursive;
+    font-size: 40px;
+    text-align: center;
+    height: 65px;
+}
+
+#lower-header {
+    margin: 0; 
+    position: sticky;
+    top: -1px;
+    height: 50px;
+    width: 100%;
+    background-color: #1e1e1e;
+    z-index: 700;
+
+}
+
+#content {
+    padding: 32px;
+    position: relative;
+}
+
+#lower-header-buttons {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+#lower-header-buttons li {
+    float: left;
+}
+
+#lower-header-buttons .enabled {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#lower-header-buttons li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#lower-header-buttons li a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.centered-both {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#notfound {
+    font-family: 'Saira Stencil One', cursive;
+    font-size: 5em;
+}
+
+a {
+    color: #fff;
+    cursor: pointer;
+}
+
+#docslist {
+    list-style-type: none;
+    list-style-position: inside;
+    display: block;
+}
+
+#docslist .row {
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+#docslist .column {
+    float: left;
+    width: 50%;
+    padding: 15px;
+    min-height: 100px;
+    box-sizing: border-box;
+    outline: #fff 1px dashed;
+    outline-offset: -5px;
+}
+.docslist-header {
+    background-color: #2e2e2e;
+    font-size: 40px;
+    font-weight: bold;
+    position: sticky;
+    top: 45px;
+}
+
+.content-href {
+    cursor: pointer;
+}
+
+#status-container {
+    margin-top: 100px;
+    padding: 20px;
+    overflow: hidden;
+
+    border-radius: 5px;
+    border: 1px solid #3e3e3e;
+
+    width: 90%;
+    max-width: 850px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-item {
+    padding: 20px 20px 20px 20px;
+}
+
+.status-item .name {
+    float: left;
+}
+
+.status-item .status {
+    float: right;
+}
+
+#status-title {
+    font-weight: bolder;
+    padding: 10px 0px 20px 10px;
+}
+
+#status-items {
+    padding-left: 10px;
+}
+#currentpath {
+    font-family: 'Roboto Mono', monospace;
+    min-height: 20px;
+    margin-bottom: 10px;
+}
+
+.pakbrowser-item {
+    left: 50px;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px;
+    outline: 0;
+    box-sizing: border-box;
+    user-select: none;
+    margin-right: 1px;
+}
+
+.pakbrowser-item:hover {
+    text-decoration: underline;
+    background-color: #282828;
+    outline: 1px solid #3e3e3e;
+}
+
+.pakbrowser-item::before {
+    background-size: 25px 25px !important;
+    width: 40px;
+    height: 25px;
+    display: inline-block;
+    content:"";
+}
+
+.pakbrowser-item.back::before {
+    background: url("/images/back.png") no-repeat;
+}
+
+.pakbrowser-item.folder::before {
+    background: url("/images/folder.png") no-repeat;
+}
+
+.pakbrowser-item.file::before {
+    background: url("/images/file.png") no-repeat;
+}
+
+#pakbrowser-browser {
+    width: 50%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    border: 1px solid #3e3e3e;
+    display: flex;
+    flex-direction: column;
+}
+
+#pakbrowser-container {
+    font-family: 'Roboto Mono', monospace;
+    overflow: scroll;
+    flex-grow: 1;
+    padding: 1px;
+    border-top: 1px solid #3e3e3e;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+#pakbrowser-fileviewer {
+    width: 50%;
+    float: left;
+    height: 100%;
+    border: 1px solid #3e3e3e;
+}
+
+#pakbrowser-fileviewer-text {
+    width: 100%;
+    height: 50%;
+    border: 1px solid #3e3e3e;
+    position: relative;
+}
+
+#pakbrowser-fileviewer-textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    outline: 0;
+    border: 0;
+    font-family: "Roboto", monospace;
+    color: #fff;
+    overflow: scroll;
+    margin: 0;
+}
+
+#pakbrowser-fileviewer-type {
+    width: 100%;
+    height: 50%;
+    border: 1px solid #3e3e3e;
+    position: relative;
+}
+
+.pakbrowser-fileviewer-type-content {
+    max-height: 99%;
+    max-width: 99%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    float: left;
+}
+
+#pakbrowser {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 115px;
+    bottom: 0;
+    padding: 32px;
+}
+
+.popup-image {
+    max-height: 99%;
+    max-width: 99%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10001;
+}
+
+.popup-background {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+.clickable-path:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#pakbrowser-browser-filter {
+    margin: 4px;
+}
+
+#pakbrowser-browser-filter-input {
+    margin: auto;
+    background: 0;
+    outline: 0;
+    border: 1px solid;
+    color: white;
+    margin: 3px;
+    padding: 2px;
+    width: 100%;
+}
+
+#popup {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    min-width: 350px;
+    min-height: 100px;
+    background: #1e1e1e;
+    padding: 10px;
+}
+
+#popup-title {
+    font-size: 26px;
+}
+
+#popup-text {
+    font-size: 18px;
+}
+
+.close {
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+}
+.close:hover {
+    opacity: 1;
+}
+.close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #fff;
+}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
+
+#popup-close {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}

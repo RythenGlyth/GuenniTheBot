@@ -1,0 +1,32 @@
+{
+  "name": "fortniteapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.1",
+    "body-parser": "^1.19.0",
+    "canvas": "^2.6.1",
+    "discord.js": "^11.6.4",
+    "epicgames-client": "^2.0.23",
+    "epicgames-fortnite-client": "^2.0.18",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "ffmpeg-binaries": "^4.0.0",
+    "html-to-image": "^0.1.1",
+    "jimp": "^0.6.8",
+    "node": "^12.16.3",
+    "node-wick": "^3.0.3",
+    "opusscript": "0.0.6",
+    "qs": "^6.9.4",
+    "request": "^2.88.2",
+    "socket.io": "^2.3.0",
+    "streamifier": "^0.1.1",
+    "svg2img": "^0.6.1"
+  }
+}

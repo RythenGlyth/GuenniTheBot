@@ -1,0 +1,234 @@
+<div id="docslist">
+    <div>
+        You can use parameter ?beautify=true for all JSON responses.<br/>
+        <div class="docslist-header">Api:</div>
+        <a href="/api/blogPosts" class="row">
+            <div class="column">
+                /api/blogPosts
+            </div>
+            <div class="column">
+                Get Blog Posts<br /><br />
+                Optional Parameter: lang (languageCode), category
+            </div>
+        </a>
+        <a href="/api/store" class="row">
+            <div class="column">
+                /api/store
+            </div>
+            <div class="column">
+                Get Store
+            </div>
+        </a>
+        <a href="/api/aesKeys" class="row">
+            <div class="column">
+                /api/aesKeys
+            </div>
+            <div class="column">
+                Get Aes Keys (MainKey not always up to date)
+            </div>
+        </a>
+        <a href="/api/keychain" class="row" style="margin-left: 30px; width: calc(100% - 30px);">
+            <div class="column">
+                /api/keychain
+            </div>
+            <div class="column">
+                Get KeyChain (raw Aes Keys from API, you don't need it)
+            </div>
+        </a>
+        <a href="/api/news" class="row">
+            <div class="column">
+                /api/news
+            </div>
+            <div class="column">
+                Get BattleRoyale/SaveTheWorld/BattlePass News Feed and more
+            </div>
+        </a>
+        <a href="/api/LTMInformation" class="row" style="margin-left: 30px; width: calc(100% - 30px);">
+            <div class="column">
+                /api/LTMInformation
+            </div>
+            <div class="column">
+                Get LTMInformation, is included in the above
+            </div>
+        </a>
+        <a href="/api/fortniteStatus" class="row">
+            <div class="column">
+                /api/fortniteStatus
+            </div>
+            <div class="column">
+                Get Fortnite Status
+            </div>
+        </a>
+        <a href="/api/eventFlags" class="row">
+            <div class="column">
+                /api/eventFlags
+            </div>
+            <div class="column">
+                Get Event Flags, including Playlists, BattlePass and events
+            </div>
+        </a>
+    </div>
+    <div>
+        <div class="docslist-header">EMS:</div>
+        <a href="/api/ems/getCloudStorage" class="row">
+            <div class="column">
+                /api/ems/getCloudStorage
+            </div>
+            <div class="column">
+                A List of all EMS Files
+            </div>
+        </a>
+        <a href="/api/ems/getCloudStorage?uniqueFilename=" class="row">
+            <div class="column">
+                /api/ems/getCloudStorage?uniqueFilename=
+            </div>
+            <div class="column">
+                Get Content of the ems file.<br /><br />
+                Needed Parameter: uniqueFilename
+            </div>
+        </a>
+    </div>
+    <div>
+        <div class="docslist-header">Game Files:</div>
+        <a href="/api/files/allCosmetics" class="row">
+            <div class="column">
+                /api/files/allCosmetics
+            </div>
+            <div class="column">
+                A List of all Cosmetic IDs
+            </div>
+        </a>
+        <a href="/api/files/fileContent?path=" class="row">
+            <div class="column">
+                /api/files/fileContent?path=
+            </div>
+            <div class="column">
+                Searches for a file whose path contains the path search string and returns it as raw file.<br /><br />
+                Needed Parameter: path (search string)
+            </div>
+        </a>
+        <a href="/api/files/Json?path=" class="row">
+            <div class="column">
+                /api/files/Json?path=
+            </div>
+            <div class="column">
+                Searches for a file whose path contains the path search string and returns it as JSON<br /><br />
+                Needed Parameter: path (search string)
+            </div>
+        </a>
+        <a href="/api/files/getImage?path=" class="row">
+            <div class="column">
+                /api/files/getImage?path=
+            </div>
+            <div class="column">
+                Searches for a file whose path contains the path search string and returns it as PNG Image file.<br /><br />
+                Needed Parameter: path (search string)
+            </div>
+        </a>
+        <a href="/api/files/getAudio?path=" class="row">
+            <div class="column">
+                /api/files/getAudio?path=
+            </div>
+            <div class="column">
+                Searches for a file whose path contains the path search string and returns it as OGG Audio file.<br /><br />
+                Needed Parameter: path (search string)
+            </div>
+        </a>
+        <a href="/api/files/allIniFiles" class="row">
+            <div class="column">
+                /api/files/allIniFiles
+            </div>
+            <div class="column">
+                Get Contents of all ini Files.
+            </div>
+        </a>
+        <a href="/api/files/getPlaylist?playlistname=" class="row">
+            <div class="column">
+                /api/files/getPlaylist?playlistname=
+            </div>
+            <div class="column">
+                Gets a JSON of the playlist, with image link, and gamefile content.
+            </div>
+        </a>
+    </div>
+    <div>
+        <div class="docslist-header">Image Generator:</div>
+        <a href="/api/imageGen/cosmeticIcon?cosmeticid=" class="row">
+            <div class="column">
+                /api/imageGen/cosmeticIcon?cosmeticid=
+            </div>
+            <div class="column">
+                Generates An 522x522 Image of the Cosmetic<br /><br />
+                Needed Parameter: cosmeticid<br />
+                Optional Parameter: featured, vbucksprice
+            </div>
+        </a>
+        <a href="/api/imageGen/series?series=" class="row">
+            <div class="column">
+                /api/imageGen/series?series=
+            </div>
+            <div class="column">
+                Generates An 522x522 Background of the Series<br /><br />
+                Needed Parameter: series<br />
+            </div>
+        </a>
+        <a href="/api/imageGen/cosmeticIconWithDescription?cosmeticid=" class="row">
+            <div class="column">
+                /api/imageGen/cosmeticIconWithDescription?cosmeticid=
+            </div>
+            <div class="column">
+                Generates An 1920x1080 Image of the Cosmetic with Description<br /><br />
+                Needed Parameter: cosmeticid<br />
+                Optional Parameter: featured
+            </div>
+        </a>
+        <a href="/api/imageGen/giantCosmeticIcon?cosmeticid=" class="row">
+            <div class="column">
+                /api/imageGen/giantCosmeticIcon?cosmeticid=
+            </div>
+            <div class="column">
+                Generates An 522x522 Image of the Cosmetic<br /><br />
+                Needed Parameter: cosmeticid<br />
+                Optional Parameter: featured, vbucksprice
+            </div>
+        </a>
+        <a href="/api/imageGen/news" class="row">
+            <div class="column">
+                /api/imageGen/news
+            </div>
+            <div class="column">
+                Generates An Image of the Current BattleRoyale News, and sends it as PNG image file.
+            </div>
+        </a>
+        <a href="/api/imageGen/shop" class="row">
+            <div class="column">
+                /api/imageGen/shop
+            </div>
+            <div class="column">
+                Generates An Image of the Current Shop, and sends it as PNG image file.
+            </div>
+        </a>
+    </div>
+    <div>
+        <div class="docslist-header">Stats:</div>
+        <a href="/api/stats/BRStatsByUsername?username=&platform=" class="row">
+            <div class="column">
+                /api/stats/BRStatsByUsername?username=&platform=
+            </div>
+            <div class="column">
+                Returns a JSON of the stats, of the player, whose name was specified, with the specified platform<br /><br />
+                Needed Parameter: username, pflatform (pc,ps4,xb1)<br />
+                Optional Parameter: timeWindow
+            </div>
+        </a>
+        <a href="/api/stats/BRStatsV2ByUsername?username=" class="row">
+            <div class="column">
+                /api/stats/BRStatsV2ByUsername?username=
+            </div>
+            <div class="column">
+                Returns a JSON of the stats V2, of the player, whose name was specified<br /><br />
+                Needed Parameter: username
+            </div>
+        </a>
+    </div>
+</div>

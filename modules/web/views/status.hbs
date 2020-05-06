@@ -1,0 +1,30 @@
+<div id="status-container">
+    <div class="status-item" id="status-title">
+        GünniTheBot
+    </div>
+    <div id="status-items">
+        {{#each items}}
+            <div class="status-item">
+                <span class="name">{{this.name}}</span>
+                <span style="color: {{this.color}};" class="status">{{this.status}}</span>
+            </div>
+        {{/each}}
+        <div class="status-item">
+            <span class="name">Ping</span>
+            <span style="color: ;" class="status" id="ping-status"></span>
+        </div>
+    </div>
+</div>
+<script>
+    window.addEventListener("load", () => {
+        socket.emit("ping-me", new Date().getTime());
+    });
+    socket.on("pong-me", (diff) => {
+        if(parseInt(diff) > 500) {
+            document.getElementById("ping-status").style.color = "#e74c3c";
+        } else {
+            document.getElementById("ping-status").style.color = "#2fcc66";
+        }
+        document.getElementById("ping-status").innerText = diff;
+    })
+</script>

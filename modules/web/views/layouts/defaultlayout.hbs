@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+        <title>GünniTheBot - {{{title}}}</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+            socket.on("shownews", (news) => {
+                console.log(news);
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('popup-title').innerText = news.title;
+                document.getElementById('popup-text').innerText = news.text;
+            })
+        </script>
+    </head>
+    <body>
+        <div id="header">Günni The Bot</div>
+        <div id="main">
+            <div id="lower-header">
+                <ul id="lower-header-buttons">
+                    <li class="{{#ifEquals path "/"}}enabled{{/ifEquals}}"><a href="/">Home Page</a></li>
+                    <li class="{{#ifEquals path "/pakbrowser"}}enabled{{/ifEquals}}"><a href="/pakbrowser">Pak Browser</a></li>
+                    
+                    <li class="{{#ifEquals path "/about"}}enabled{{/ifEquals}}" style="float:right"><a href="/about">About</a></li>
+                    <li class="{{#ifEquals path "/docs"}}enabled{{/ifEquals}}" style="float:right"><a href="/docs">API-Documentation</a></li>
+                    <li class="{{#ifEquals path "/status"}}enabled{{/ifEquals}}" style="float:right"><a href="/status">Status</a></li>
+                </ul>
+            </div>
+            <div id="content">
+                {{{body}}}
+            </div>
+        </div>
+        <div id="popup" style="display: none">
+            <a onclick="document.getElementById('popup').style.display = 'none';" id="popup-close" class="close"></a>
+            <div id="popup-title">sas</div>
+            <div id="popup-text">ses</div>
+        </div>
+    </body>
+</html>

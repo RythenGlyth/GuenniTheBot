@@ -1,0 +1,186 @@
+<div id="pakbrowser">
+    <div id="pakbrowser-browser">
+        <div id="currentpath"></div>
+        <div id="pakbrowser-container"></div>
+        <div id="pakbrowser-browser-filter">
+            Filter: <input oninput="reFilter()" id="pakbrowser-browser-filter-input">
+        </div>
+    </div>
+    <div id="pakbrowser-fileviewer">
+        <div id="pakbrowser-fileviewer-text">
+            <pre id="pakbrowser-fileviewer-textarea" readonly></pre>
+        </div>
+        <div id="pakbrowser-fileviewer-type"></div>
+    </div>
+</div>
+<script>
+    var currentFolder = "";
+    function setCurrentFolder(folder) {
+        currentFolder = folder;
+        document.getElementById("currentpath").innerHTML = "";
+        {
+            var crntpth = "";
+            ("./" + currentFolder).split("/").forEach(path => {
+                if(path != "") {
+                    crntpth += crntpth == "" ? path : "/" + path;
+                    var thecurrentpath = crntpth;
+                    var span = document.createElement("span");
+                    span.innerText = path;
+                    span.addEventListener("click", () => {
+                        loadFolder(thecurrentpath.substr(2));
+                    });
+                    span.classList.add("clickable-path");
+                    document.getElementById("currentpath").appendChild(span);
+                    document.getElementById("currentpath").append("/");
+                }
+            });
+        }
+        history.pushState({}, null, window.location.toString().split("?")[0] + "?path=" + currentFolder);
+    }
+    function openFolder(folder) {
+        loadFolder(currentFolder + (currentFolder == "" ? "" : "/") + folder);
+    }
+    function returnFolder() {
+        var split = currentFolder.split("/");
+        loadFolder(split.slice(0, split.length - 1).join("/"));
+    }
+    function loadFolder(folder) {
+        socket.emit("pakexplorer-openFolder", folder);
+    }
+
+    function reFilter() {
+        var filterInput = document.getElementById("pakbrowser-browser-filter-input").value;
+        Array.from(document.getElementById("pakbrowser-container").children).forEach(item => {
+            if(!item.classList.contains("back")) item.style.display = item.innerText.match(new RegExp(filterInput.split("").join(".*"), "i")) ? "block" : "none";
+        });
+    }
+
+    {
+        setCurrentFolder("{{pakbrowserpath}}")
+        loadFolder(currentFolder);
+    }
+
+    document.addEventListener("keydown", (ev) => {
+        if(ev.target.id != "pakbrowser-browser-filter-input") {
+            if(ev.key == "Backspace") {
+                returnFolder();
+            }
+        }
+    });
+    socket.on("pakexplorer-updatejson", (json) => {
+        console.log("ses");
+        document.getElementById("pakbrowser-fileviewer-textarea").innerText = json;
+    });
+    socket.on("pakexplorer-update-type-multiple", data => {
+        document.getElementById("pakbrowser-fileviewer-type").innerHTML = "";
+        data.forEach(type => {
+            if(type.type == "audio") {
+                addAudio(type.src);
+            } else if(type.type == "image") {
+                addImage(type.src);
+            }
+        });
+    });
+    function addAudio(data) {
+        var audio = document.createElement("audio");
+        audio.src = data;
+        audio.controls = "true";
+        audio.preload = "auto";
+        audio.classList.add("pakbrowser-fileviewer-type-content");
+        document.getElementById("pakbrowser-fileviewer-type").appendChild(audio);
+    }
+    function addImage(data) {
+        var img = document.createElement("img");
+        img.src = data;
+        img.classList.add("pakbrowser-fileviewer-type-content");
+        img.addEventListener("click", () => {
+            var popupbackground = document.createElement("div");
+            popupbackground.classList.add("popup-background");
+            popupbackground.addEventListener("click", (ev) => {
+                
+                if(Array.from(ev.target.classList).includes("popup-background")) {
+                    popupbackground.remove();
+                    window.removeEventListener("keydown", keydown);
+                }
+            });
+            window.addEventListener("keydown", keydown);
+
+            function keydown(ev) {
+                if(ev.key == "Escape") {
+                    popupbackground.remove();
+                    window.removeEventListener("keydown", keydown);
+                }
+            }
+
+            var popupimage = document.createElement("img");
+            popupimage.classList.add("popup-image");
+            popupimage.src = data;
+
+            popupbackground.appendChild(popupimage);
+            document.body.appendChild(popupbackground);
+        });
+        document.getElementById("pakbrowser-fileviewer-type").appendChild(img);
+    }
+    socket.on("pakexplorer-update-type-audio", data => {
+        document.getElementById("pakbrowser-fileviewer-type").innerHTML = "";
+        addAudio(data);
+    });
+    socket.on("pakexplorer-update-type-Image", data => {
+        document.getElementById("pakbrowser-fileviewer-type").innerHTML = "";
+        addImage(data);
+    });
+    socket.on("pakexplorer-update-type-clear", () => {
+        document.getElementById("pakbrowser-fileviewer-type").innerHTML = "";
+    });
+    socket.on("pakexplorer-updatejson-clear", () => {
+        document.getElementById("pakbrowser-fileviewer-textarea").innerText = "";
+    });
+    socket.on("pakexplorer-updatefiles", (data) => {
+        console.log(data);
+        setCurrentFolder(data.path);
+
+        document.getElementById("pakbrowser-browser-filter-input").value = "";
+        reFilter();
+
+        document.getElementById("pakbrowser-container").innerHTML = "";
+        document.getElementById("pakbrowser-container").scrollTo({
+            top: 0
+        });
+        if((currentFolder.split("/").length > 0) && currentFolder.split("/")[0]) {
+            var backitem = document.createElement("div");
+            backitem.classList.add("pakbrowser-item");
+            backitem.classList.add("back");
+            backitem.innerText = "..";
+            backitem.addEventListener("click", returnFolder);
+            document.getElementById("pakbrowser-container").appendChild(backitem);
+        }
+        data.folder.forEach(file => {
+            var fileItem = document.createElement("div");
+            fileItem.classList.add("pakbrowser-item");
+
+            fileItem.innerText = "[" + file + "]";
+            fileItem.classList.add("folder");
+            fileItem.addEventListener("click", () => {
+                openFolder(file);
+            });
+
+            document.getElementById("pakbrowser-container").appendChild(fileItem);
+        });
+        data.files.forEach(file => {
+            var fileItem = document.createElement("div");
+            fileItem.classList.add("pakbrowser-item");
+            fileItem.innerText = file;
+            fileItem.classList.add("file");
+            fileItem.addEventListener("click", () => {
+                socket.emit("pakexplorer-open", currentFolder + "/" + file);
+            });
+            document.getElementById("pakbrowser-container").appendChild(fileItem);
+        });
+    });
+
+    {
+        if("{{extract}}" != "") {
+            socket.emit("pakexplorer-open", currentFolder + "/" + "{{extract}}");
+        }
+    }
+</script>
