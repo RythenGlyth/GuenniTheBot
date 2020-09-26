@@ -2,9 +2,14 @@ const axios = require("axios");
 const request = require("request");
 const qs = require("qs");
 const fs = require("fs");
+const crypto = require('crypto');
 
 const EndPoints = require("./tools/endpoints");
 const Stats = require("./tools/stats");
+const endpoints = require("./tools/endpoints");
+
+const IOS_TOKEN = 'MzQ0NmNkNzI2OTRjNGE0NDg1ZDgxYjc3YWRiYjIxNDE6OTIwOWQ0YTVlMjVhNDU3ZmI5YjA3NDg5ZDMxM2I0MWE=';
+const LAUNCHER_TOKEN = 'MzRhMDJjZjhmNDQxNGUyOWIxNTkyMTg3NmRhMzZmOWE6ZGFhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=';
 
 class FortniteApi {
     constructor(credentials) {
@@ -67,106 +72,127 @@ class FortniteApi {
     //Login to Epic Games API
     login() {
         return new Promise((resolve, reject) => {
-            var jar = request.jar();
+            /*var jar = request.jar();
             request({
-                url: EndPoints.EPIC_CSRF,
-                method: "GET",
-                jar
+                url: EndPoints.EPIC_REPUTATION,
+                jar,
+                headers: {
+                  'User-Agent': EndPoints.USER_AGENT,
+                },
+                json: true,
             }, (err, res) => {
-                var cookiesObj = this.setCookiesToObj(res.headers["set-cookie"]);
                 request({
-                    url: EndPoints.EPIC_LOGIN,
-                    method: "POST",
+                    url: EndPoints.EPIC_CSRF,
+                    method: "GET",
+                    jar,
                     headers: {
-                        "X-XSRF-TOKEN": cookiesObj["XSRF-TOKEN"],
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    form: qs.stringify({
-                        email: this.credentials[0],
-                        password: this.credentials[1],
-                        rememberMe: false
-                    }),
-                    jar
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'User-Agent': EndPoints.USER_AGENT,
+                    }
                 }, (err, res) => {
+                    var cookiesObj = this.setCookiesToObj(res.headers["set-cookie"]);
+                    console.log(cookiesObj["XSRF-TOKEN"]);
+                    
                     request({
-                        url: EndPoints.EPIC_EXCHANGE,
-                        method: "GET",
+                        url: EndPoints.EPIC_LOGIN,
+                        method: "POST",
                         headers: {
-                            "X-XSRF-TOKEN": cookiesObj["XSRF-TOKEN"],
+                            "x-xsrf-token": cookiesObj["XSRF-TOKEN"],
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'User-Agent': EndPoints.USER_AGENT,
                         },
+                        form: qs.stringify({
+                            email: this.credentials[0],
+                            password: this.credentials[1],
+                            captcha: "",
+                            rememberMe: false
+                        }),
                         jar
                     }, (err, res) => {
-                        var accessJson = JSON.parse(res.body);
+                        console.log(res);
                         request({
-                            url: EndPoints.OAUTH_TOKEN,
+                            url: EndPoints.EPIC_EXCHANGE,
+                            method: "GET",
                             headers: {
-                                "Authorization": "basic " + this.credentials[3],
-                                "Content-Type": "application/x-www-form-urlencoded",
+                                "x-xsrf-token": cookiesObj["XSRF-TOKEN"],
+                                'User-Agent': EndPoints.USER_AGENT,
                             },
-                            form: qs.stringify({
-                                grant_type: "exchange_code",
-                                exchange_code: accessJson.code,
-                                includePerms: true,
-                                token_type: "eg1"
-                            }),
-                            method: "POST"
+                            jar
                         }, (err, res) => {
-                            var json = JSON.parse(res.body);
-                            this.expires_at = json.expires_at;
-                            this.access_token = json.access_token;
-                            this.refresh_token = json.refresh_token;
-                            this.refresh_expires_at = json.refresh_expires_at;
-                            this.account_id = json.account_id;
-                            this.intervalCheckToken = setInterval(() => {
-                                this.checkToken();
-                            }, 1000);
-                            resolve(this.expires_at);
-
-                            
+                            var accessJson = JSON.parse(res.body);
+                            request({
+                                url: EndPoints.OAUTH_TOKEN,
+                                headers: {
+                                    "Authorization": "basic " + this.credentials[3],
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                    'User-Agent': EndPoints.USER_AGENT,
+                                },
+                                form: qs.stringify({
+                                    grant_type: "exchange_code",
+                                    exchange_code: accessJson.code,
+                                    includePerms: true
+                                }),
+                                method: "POST"
+                            }, (err, res) => {
+                                var json = JSON.parse(res.body);
+                                console.log(json);
+                                this.expires_at = json.expires_at;
+                                this.access_token = json.access_token;
+                                this.refresh_token = json.refresh_token;
+                                this.refresh_expires_at = json.refresh_expires_at;
+                                this.account_id = json.account_id;
+                                this.intervalCheckToken = setInterval(() => {
+                                    this.checkToken();
+                                }, 1000);
+                                //resolve(this.expires_at);
+    
+                                
+                            });
                         });
                     });
                 });
-            });
-            /*axios({
+            });*/
+            axios({
                 url: EndPoints.OAUTH_TOKEN,
-                headers: {
+                headers: this.getHeaders(this.credentials[2]),
+                /*{
+                    "User-Agent": "game=UELauncher, engine=UE4, build=7.14.2-4231683+++Portal+Release-Live",
                     "Authorization": "basic " + this.credentials[2],
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "User-Agent": "PostmanRuntime/7.13.0",
-                    "accept-encoding": "gzip, deflate"
-                },
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },*/
                 data: qs.stringify({
+                    token_type: 'eg1',
                     grant_type: "password",
                     username: this.credentials[0],
                     password: this.credentials[1],
-                    includePerms: true
+                    includePerms: false
                 }),
-                method: "POST",
-                responseType: "json"
+                method: "POST"
             }).then(res => {
                 this.access_token = res.data.access_token;
                 axios({
                     url: EndPoints.OAUTH_EXCHANGE,
-                    headers: {
+                    headers: this.getHeaders(this.access_token, false),
+                    
+                    /*{
                         Authorization: "bearer " + this.access_token
-                    },
-                    method: "GET",
-                    responseType: "json"
+                    },*/
+                    method: "GET"
                 }).then(res => {
                     this.access_code = res.data.code;
                     axios({
                         url: EndPoints.OAUTH_TOKEN,
-                        headers: {
+                        headers: this.getHeaders(this.credentials[3], true),
+                        /*{
                             Authorization: "basic " + this.credentials[3]
-                        },
+                        },*/
                         data: qs.stringify({
                             grant_type: "exchange_code",
                             exchange_code: this.access_code,
-                            includePerms: true,
+                            includePerms: false,
                             token_type: "eg1"
                         }),
-                        method: "POST",
-                        responseType: "json"
+                        method: "POST"
                     }).then(res => {
                         this.expires_at = res.data.expires_at;
                         this.access_token = res.data.access_token;
@@ -194,10 +220,27 @@ class FortniteApi {
                     message: "Something wrong is happened, please try again.",
                     err
                 });
-            });*/
+            });
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    getHeaders(token, basic = true) {
+        return {
+            "User-Agent": endpoints.USER_AGENT,
+            "Authorization": basic == true ? "basic " + token : "bearer " + token,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "EPIC_DEVICE": this.getRandomDeviceID(),
+        };
+    }
+
+    getRandomDeviceID() {
+        return (crypto.randomBytes(8).toString('hex') + "-" + crypto.randomBytes(4).toString('hex') + "-" + crypto.randomBytes(4).toString('hex') + "-" + crypto.randomBytes(4).toString('hex') + "-" + crypto.randomBytes(12).toString('hex'))
+    }
+
+    getRandomID() {
+        return crypto.randomBytes(8).toString('hex');
     }
 
     getBlogPosts(lang, category) {

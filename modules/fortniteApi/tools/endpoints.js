@@ -1,6 +1,7 @@
 module.exports = {
     OAUTH_TOKEN: "https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/token",
     OAUTH_EXCHANGE: "https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/exchange",
+    EPIC_REPUTATION: "https://www.epicgames.com/id/api/reputation",
     EPIC_CSRF: "https://www.epicgames.com/id/api/csrf",
     EPIC_LOGIN: "https://www.epicgames.com/id/api/login",
     EPIC_EXCHANGE: "https://www.epicgames.com/id/api/exchange",
@@ -13,6 +14,8 @@ module.exports = {
     KeyChain: "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/storefront/v2/keychain",
     cloudstorage: 'https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/cloudstorage/system',
     APP_MANIFEST: "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/public/assets/v2/platform/Windows/namespace/fn/catalogItem/4fe75bbc5a674f4f9b356b5c90567da5/app/Fortnite/label/Live",
+    //USER_AGENT: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+    USER_AGENT: 'game=UELauncher, engine=UE4, build=10.18.7-14280373+++Portal+Release-Live',
     blogPosts: (locale, category) => {
         return "https://www.epicgames.com/fortnite/api/blog/getPosts?postsPerPage=0&offset=0&locale=" + locale + (category ? ("&category=" + encodeURI(category)) : "");
     },
