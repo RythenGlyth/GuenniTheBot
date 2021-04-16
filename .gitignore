@@ -4,4 +4,4 @@ package-lock.json
 .vscode/
 .egstore/
 config.json
-fonts/
+fonts/*
